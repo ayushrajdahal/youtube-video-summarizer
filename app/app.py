@@ -61,34 +61,6 @@ def get_summary(url):
 
     return output[0]['summary_text']
 
-# def plt_pie_chart(url):
-
-#     request = youtube.commentThreads().list(
-#         part="snippet",
-#         videoId=url.split('?v=')[1],
-#         maxResults=100
-#     )
-#     response = request.execute()
-
-#     comments = [item['snippet']['topLevelComment']['snippet']['textDisplay'] for item in response['items']]
-#     polarities = [TextBlob(comment).sentiment.polarity for comment in comments]
-#     sentiments = ['Positive' if polarity > 0 else 'Negative' if polarity < 0 else 'Neutral' for polarity in polarities]
-
-#     # pd.DataFrame(comments, sentiments)to_json()
-#     data = pd.DataFrame(sentiments)
-
-#     counter = Counter(data)
-#     labels = list(counter.keys())
-#     values = list(counter.values())
-#     fig, ax = plt.subplots()
-#     ax.pie(values, labels=labels, autopct='%1.1f%%', startangle=90)
-#     ax.axis('equal')
-
-#     # This dataframe has 244 lines, but 4 distinct values for `day`
-#     df = px.data.tips()
-#     # fig = px.pie(data, values=0, names=0, hole=.3)
-#     return fig
-
 def plotly_pie_chart(url):
 
     request = youtube.commentThreads().list(
