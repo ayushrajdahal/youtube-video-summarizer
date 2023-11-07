@@ -10,11 +10,11 @@ from textblob import TextBlob
 import plotly.express as px
 from config import youtube_api_key, huggingface_api_key
 
-# for huggingface
+# credentials for huggingface
 API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
 headers = {"Authorization": f"Bearer {huggingface_api_key}"}
 
-# for youtube v3
+# credentials for youtube v3
 api_service_name = "youtube"
 api_version = "v3"
 DEVELOPER_KEY = youtube_api_key
@@ -47,7 +47,8 @@ def get_title(url):
         id=yt_id
     )
     response = request.execute()
-    return response['items'][0]['snippet']['title']
+    return response['items'][0]['snippet']['title', 'duration']
+    
 
 def get_summary(url):
     yt_id = url.split('?v=')[1]
@@ -121,15 +122,13 @@ url = st.text_input('Enter URL:')
 
 if url:
     st.markdown(f'**Video Title:**')
-    st.write(f'{get_title(url)}')
+    title, duration = get_title(url)
+    st.write(f'{title} (Duration: {duration}')
 
     st.markdown('**Summary:**')
     st.write(get_summary(url))         # temporarily removed for avoiding huggingface API call
     fig, df = plotly_pie_chart(url)
     st.plotly_chart(fig, use_container_width=True)
-    
-    # # Create a checkbox to toggle the visibility of the DataFrame
-    # show_df = st.checkbox("Show Comments", value=False)
 
     # Use st.expander to create a collapsible section
     with st.expander("See Comments", expanded=False):
