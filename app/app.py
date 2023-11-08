@@ -9,6 +9,9 @@ import googleapiclient.errors
 from textblob import TextBlob
 import plotly.express as px
 from config import youtube_api_key, huggingface_api_key
+import os
+
+# youtube_api_key, huggingface_api_key = os.getenv('YT_API_KEY'), os.getenv('HF_API_KEY')
 
 # credentials for huggingface
 API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
