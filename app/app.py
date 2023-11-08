@@ -44,6 +44,10 @@ hide_streamlit_style = """
         """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+st.set_page_config(
+        page_title="AnalyzeYT",
+        layout="wide",
+    )
 
 
 # streamlit components
