@@ -47,7 +47,9 @@ def get_title(url):
         id=yt_id
     )
     response = request.execute()
-    return response['items'][0]['snippet']['title', 'duration']
+    return response['items'][0]['snippet']['title']
+
+    # get duration of video
     
 
 def get_summary(url):
@@ -94,8 +96,9 @@ url = st.text_input('Enter URL:')
 
 if url:
     st.markdown(f'**Video Title:**')
-    title, duration = get_title(url)
-    st.write(f'{title} (Duration: {duration}')
+    title = get_title(url)
+    # st.write(f'{title} (Duration: {duration}')
+    st.write(f'{title}')
 
     st.markdown('**Summary:**')
     st.write(get_summary(url))         # temporarily removed for avoiding huggingface API call
