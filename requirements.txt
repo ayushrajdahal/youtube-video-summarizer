@@ -1,5 +1,4 @@
 streamlit==1.19.0
-collections==0.5.4
 requests==2.28.2
 matplotlib==3.7.0
 youtube_transcript_api==0.6.1
