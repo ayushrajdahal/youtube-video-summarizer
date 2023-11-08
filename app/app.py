@@ -41,9 +41,6 @@ hide_streamlit_style = """
         <style>
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
-        #MainMenu {
-        visibility: hidden;
-        }
         #GithubIcon {
         visibility: hidden;
         }
