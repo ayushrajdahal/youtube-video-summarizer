@@ -120,22 +120,25 @@ if url:
         st.stop()
     
     st.markdown(f'**Video Title:**')
-    title = get_title(url)
+    with st.spinner('Getting video title...'):
+        title = get_title(url)
     # st.write(f'{title} (Duration: {duration}')
     st.write(f'{title}')
 
     st.markdown('**Summary:**')
     try:
-        st.write(get_summary(url))         # temporarily removed for avoiding huggingface API call
+        with st.spinner('Summarizing the video...'):
+            st.write(get_summary(url))         # temporarily removed for avoiding huggingface API call
     except Exception as e:
         st.warning('This video doesn\'t have transcript/subtitles enabled.')
     
     try:
-        fig, df = plotly_pie_chart(url)
-        st.plotly_chart(fig, use_container_width=True)
+        with st.spinner('Loading comment section sentiment analysis...'):
+            fig, df = plotly_pie_chart(url)
+            st.plotly_chart(fig, use_container_width=True)
 
-        # Use st.expander to create a collapsible section
-        with st.expander("See Comments", expanded=False):
-            st.dataframe(df)
+            # Use st.expander to create a collapsible section
+            with st.expander("See Comments", expanded=False):
+                st.dataframe(df)
     except Exception as e:
         st.warning('This video doesn\'t have comments enabled.')
