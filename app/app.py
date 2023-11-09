@@ -114,18 +114,22 @@ st.write('Summarizes a YouTube video using its transcript and performs sentiment
 
 url = st.text_input('Enter URL:')
 
-if 'youtube.com' or 'youtu.be' not in url:
-    st.warning('Please enter a valid YouTube video URL.')
-
 if url:
-    try:
-        st.markdown(f'**Video Title:**')
-        title = get_title(url)
-        # st.write(f'{title} (Duration: {duration}')
-        st.write(f'{title}')
+    if 'youtube.com' or 'youtu.be' not in url:
+        st.warning('Please enter a valid YouTube video URL.')
+    
+    st.markdown(f'**Video Title:**')
+    title = get_title(url)
+    # st.write(f'{title} (Duration: {duration}')
+    st.write(f'{title}')
 
-        st.markdown('**Summary:**')
+    st.markdown('**Summary:**')
+    try:
         st.write(get_summary(url))         # temporarily removed for avoiding huggingface API call
+    except Exception as e:
+        st.warning('This video doesn\'t have transcript/subtitles enabled.')
+    
+    try:
         fig, df = plotly_pie_chart(url)
         st.plotly_chart(fig, use_container_width=True)
 
@@ -133,4 +137,4 @@ if url:
         with st.expander("See Comments", expanded=False):
             st.dataframe(df)
     except Exception as e:
-        st.warning("This video doesn't have transcript or comments enabled.")
+        st.warning('This video doesn\'t have comments enabled.')
