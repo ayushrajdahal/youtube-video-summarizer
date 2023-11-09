@@ -115,7 +115,7 @@ st.write('Summarizes a YouTube video using its transcript and performs sentiment
 url = st.text_input('Enter URL:')
 
 if url:
-    if not 'youtu.be' in url or 'youtube.com' in url:
+    if not ('youtu.be' in url or 'youtube.com' in url):
         st.warning('Please enter a valid YouTube video URL.')
         st.stop()
     
