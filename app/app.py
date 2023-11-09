@@ -49,13 +49,22 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
+def get_id(url):
+
+    if 'youtu.be' in url:
+        videoId = url.split('youtu.be/')[1]
+        videoId = videoId.split('?')[0]
+    else:
+        videoId = url.split('?v=')[1]
+        videoId = videoId.split('&')[0]
+    
+    return videoId
 
 # streamlit components
 def get_title(url):
-    yt_id = url.split('?v=')[1]
     request = youtube.videos().list(
         part="snippet",
-        id=yt_id
+        id=get_id(url)
     )
     response = request.execute()
     return response['items'][0]['snippet']['title']
@@ -64,7 +73,7 @@ def get_title(url):
     
 
 def get_summary(url):
-    yt_id = url.split('?v=')[1]
+    yt_id = get_id(url)
     transcript = YouTubeTranscriptApi.get_transcript(yt_id)
     inputtext = ' '.join([tt['text'] for tt in transcript]).replace('\n', " ")
 
@@ -78,7 +87,7 @@ def plotly_pie_chart(url):
 
     request = youtube.commentThreads().list(
         part="snippet",
-        videoId=url.split('?v=')[1],
+        videoId=get_id(url),
         maxResults=500
     )
     response = request.execute()
