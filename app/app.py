@@ -204,13 +204,13 @@ if url:
     except Exception as e:
         st.warning('This video doesn\'t have transcript/subtitles enabled.')
     
-    # try:
-    with st.spinner('Loading comment section sentiment analysis...'):
-        fig, df = plotly_pie_chart(url)
-        st.plotly_chart(fig, use_container_width=True)
+    try:
+        with st.spinner('Loading` comment section sentiment analysis...'):
+            fig, df = plotly_pie_chart(url)
+            st.plotly_chart(fig, use_container_width=True)
 
-        # Use st.expander to create a collapsible section
-        with st.expander("See Comments", expanded=False):
-            st.dataframe(df)
-    # except Exception as e:
-    #     st.warning('This video doesn\'t have comments enabled.')
+            # Use st.expander to create a collapsible section
+            with st.expander("See Comments", expanded=False):
+                st.dataframe(df)
+    except Exception as e:
+        st.warning('This video doesn\'t have comments enabled.')
