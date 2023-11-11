@@ -10,6 +10,8 @@ from textblob import TextBlob
 import plotly.express as px
 # from config import youtube_api_key, huggingface_api_key
 import os
+from htbuilder import HtmlElement, div, hr, a, p, img, styles
+from htbuilder.units import percent, px
 
 youtube_api_key, huggingface_api_key = st.secrets['youtube_api_key'], st.secrets['huggingface_api_key']
 # youtube_api_key, huggingface_api_key = os.getenv('YT_API_KEY'), os.getenv('HF_API_KEY')
@@ -106,11 +108,81 @@ def plotly_pie_chart(url):
     fig = px.pie(values=values, names=labels, hole=.3, title='Comment Section Sentiment Analysis:')
     return fig, df
 
-# streamlit main app
+# app title
 
 st.title('AnalyzeYT')
 
 st.write('Summarizes a YouTube video using its transcript and performs sentiment analysis on the comments.')
+
+
+# footer stuff
+
+def link(link, text, **style):
+    return a(_href=link, _target="_blank", style=styles(**style))(text)
+
+
+def layout(*args):
+
+    style = """
+    <style>
+      # MainMenu {visibility: hidden;}
+      footer {visibility: hidden;}
+     .stApp { bottom: 105px; }
+    </style>
+    """
+
+    style_div = styles(
+        position="fixed",
+        left=0,
+        bottom=0,
+        margin=px(0, 0, 0, 0),
+        width=percent(100),
+        text_align="center",
+        height="auto",
+    )
+
+    style_hr = styles(
+        display="block",
+        margin=px(8, 8, "auto", "auto"),
+        border_style="inset",
+        border_width=px(0)
+    )
+
+    body = p()
+    foot = div(
+        style=style_div
+    )(
+        hr(
+            style=style_hr
+        ),
+        body
+    )
+
+    st.markdown(style, unsafe_allow_html=True)
+
+    for arg in args:
+        if isinstance(arg, str):
+            body(arg)
+
+        elif isinstance(arg, HtmlElement):
+            body(arg)
+
+    st.markdown(str(foot), unsafe_allow_html=True)
+
+
+def footer():
+    myargs = [
+        "Made with ❤️ by ",
+        link("https://ayushraj.com.np/", "Ayush Raj Dahal"),
+    ]
+    layout(*myargs)
+
+
+if __name__ == "__main__":
+    footer()
+
+
+# main app
 
 url = st.text_input('Enter URL:')
 
