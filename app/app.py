@@ -11,7 +11,7 @@ import plotly.express as px
 # from config import youtube_api_key, huggingface_api_key
 import os
 from htbuilder import HtmlElement, div, hr, a, p, img, styles
-from htbuilder.units import percent, px
+from htbuilder.units import percent, px as ht_px
 
 youtube_api_key, huggingface_api_key = st.secrets['youtube_api_key'], st.secrets['huggingface_api_key']
 # youtube_api_key, huggingface_api_key = os.getenv('YT_API_KEY'), os.getenv('HF_API_KEY')
@@ -39,16 +39,16 @@ st.set_page_config(page_title="AnalyzeYT")
 
 # hides footer & header components
 
-hide_streamlit_style = """
-        <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        #GithubIcon {
-        visibility: hidden;
-        }
-        </style>
-        """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+# hide_streamlit_style = """
+#         <style>
+#         #MainMenu {visibility: hidden;}
+#         footer {visibility: hidden;}
+#         #GithubIcon {
+#         visibility: hidden;
+#         }
+#         </style>
+#         """
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
 def get_id(url):
@@ -135,7 +135,7 @@ def layout(*args):
         position="fixed",
         left=0,
         bottom=0,
-        margin=px(0, 0, 0, 0),
+        margin=ht_px(0, 0, 0, 0),
         width=percent(100),
         text_align="center",
         height="auto",
@@ -143,9 +143,9 @@ def layout(*args):
 
     style_hr = styles(
         display="block",
-        margin=px(8, 8, "auto", "auto"),
+        margin=ht_px(8, 8, "auto", "auto"),
         border_style="inset",
-        border_width=px(0)
+        border_width=ht_px(0)
     )
 
     body = p()
@@ -204,13 +204,13 @@ if url:
     except Exception as e:
         st.warning('This video doesn\'t have transcript/subtitles enabled.')
     
-    try:
-        with st.spinner('Loading comment section sentiment analysis...'):
-            fig, df = plotly_pie_chart(url)
-            st.plotly_chart(fig, use_container_width=True)
+    # try:
+    with st.spinner('Loading comment section sentiment analysis...'):
+        fig, df = plotly_pie_chart(url)
+        st.plotly_chart(fig, use_container_width=True)
 
-            # Use st.expander to create a collapsible section
-            with st.expander("See Comments", expanded=False):
-                st.dataframe(df)
-    except Exception as e:
-        st.warning('This video doesn\'t have comments enabled.')
+        # Use st.expander to create a collapsible section
+        with st.expander("See Comments", expanded=False):
+            st.dataframe(df)
+    # except Exception as e:
+    #     st.warning('This video doesn\'t have comments enabled.')
