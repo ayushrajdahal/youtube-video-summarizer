@@ -1,14 +1,12 @@
 import streamlit as st
 from collections import Counter
 import requests
-import matplotlib.pyplot as plt
 from youtube_transcript_api import YouTubeTranscriptApi
 import pandas as pd
 import googleapiclient.discovery
 import googleapiclient.errors
 from textblob import TextBlob
 import plotly.express as px
-# from config import youtube_api_key, huggingface_api_key
 import os
 from htbuilder import HtmlElement, div, hr, a, p, img, styles
 from htbuilder.units import percent, px as ht_px
@@ -38,30 +36,6 @@ def query(payload):
 
 st.set_page_config(page_title="AnalyzeYT")
 
-# hides footer & header components
-
-# hide_streamlit_style = """
-#         <style>
-#         #MainMenu {visibility: hidden;}
-#         footer {visibility: hidden;}
-#         #GithubIcon {
-#         visibility: hidden;
-#         }
-#         </style>
-#         """
-# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-
-def get_id(url):
-
-    if 'youtu.be' in url:
-        videoId = url.split('youtu.be/')[1]
-        videoId = videoId.split('?')[0]
-    else:
-        videoId = url.split('?v=')[1]
-        videoId = videoId.split('&')[0]
-    
-    return videoId
 
 # streamlit components
 def get_title(yt_id):
