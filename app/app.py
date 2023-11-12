@@ -7,13 +7,11 @@ import googleapiclient.discovery
 import googleapiclient.errors
 from textblob import TextBlob
 import plotly.express as px
-import os
 from htbuilder import HtmlElement, div, hr, a, p, img, styles
 from htbuilder.units import percent, px as ht_px
 from  pytube.extract import video_id
 
 youtube_api_key, huggingface_api_key = st.secrets['youtube_api_key'], st.secrets['huggingface_api_key']
-# youtube_api_key, huggingface_api_key = os.getenv('YT_API_KEY'), os.getenv('HF_API_KEY')
 
 # credentials for huggingface
 API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
