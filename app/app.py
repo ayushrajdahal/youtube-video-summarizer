@@ -85,7 +85,7 @@ def plotly_pie_chart(yt_id):
 # st.markdown("<h1 style='text-align: center;'>AnalyzeYT</h1>", unsafe_allow_html=True)
 st.title('AnalyzeYT')
 
-st.write('Summarizes YouTube videos using their transcript (subtitles) and performs sentiment analysis on the comments. Aimed to prevent clickbait content and get overall public opinion about creators & videos.')
+st.write('Summarizes YouTube videos using their subtitles and performs sentiment analysis on the comments.')
 
 
 # footer stuff
