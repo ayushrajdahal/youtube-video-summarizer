@@ -7,3 +7,4 @@ google-api-python-client==2.12.0
 textblob==0.17.1
 plotly==5.18.0
 htbuilder==0.6.2
+pytube==15.0.0
