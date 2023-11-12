@@ -12,6 +12,7 @@ import plotly.express as px
 import os
 from htbuilder import HtmlElement, div, hr, a, p, img, styles
 from htbuilder.units import percent, px as ht_px
+from  pytube.extract import video_id
 
 youtube_api_key, huggingface_api_key = st.secrets['youtube_api_key'], st.secrets['huggingface_api_key']
 # youtube_api_key, huggingface_api_key = os.getenv('YT_API_KEY'), os.getenv('HF_API_KEY')
@@ -63,10 +64,10 @@ def get_id(url):
     return videoId
 
 # streamlit components
-def get_title(url):
+def get_title(yt_id):
     request = youtube.videos().list(
         part="snippet",
-        id=get_id(url)
+        id=yt_id
     )
     response = request.execute()
     return response['items'][0]['snippet']['title']
@@ -74,8 +75,7 @@ def get_title(url):
     # get duration of video
     
 
-def get_summary(url):
-    yt_id = get_id(url)
+def get_summary(yt_id):
     transcript = YouTubeTranscriptApi.get_transcript(yt_id)
     inputtext = ' '.join([tt['text'] for tt in transcript]).replace('\n', " ")
 
@@ -85,11 +85,11 @@ def get_summary(url):
 
     return output[0]['summary_text']
 
-def plotly_pie_chart(url):
+def plotly_pie_chart(yt_id):
 
     request = youtube.commentThreads().list(
         part="snippet",
-        videoId=get_id(url),
+        videoId=yt_id,
         maxResults=500
     )
     response = request.execute()
@@ -188,26 +188,28 @@ if __name__ == "__main__":
 url = st.text_input('Enter URL:')
 
 if url:
-    if not ('youtu.be' in url or 'youtube.com' in url):
+    try:
+        yt_id = video_id(url)
+    except Exception as e:
         st.warning('Please enter a valid YouTube video URL.')
         st.stop()
     
     st.markdown(f'**Video Title:**')
     with st.spinner('Getting video title...'):
-        title = get_title(url)
+        title = get_title(yt_id)
     # st.write(f'{title} (Duration: {duration}')
     st.write(f'{title}')
 
     st.markdown('**Summary:**')
     try:
         with st.spinner('Summarizing the video...'):
-            st.write(get_summary(url))         # temporarily removed for avoiding huggingface API call
+            st.write(get_summary(yt_id))         # temporarily removed for avoiding huggingface API call
     except Exception as e:
         st.warning('This video doesn\'t have transcript/subtitles enabled.')
     
     try:
         with st.spinner('Loading` comment section sentiment analysis...'):
-            fig, df = plotly_pie_chart(url)
+            fig, df = plotly_pie_chart(yt_id)
             st.plotly_chart(fig, use_container_width=True)
 
             # Use st.expander to create a collapsible section
