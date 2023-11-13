@@ -157,7 +157,7 @@ if __name__ == "__main__":
 
 # main app
 
-url = st.text_input('Enter URL:')
+url = st.text_input('Enter video URL:')
 
 if url:
     try:
