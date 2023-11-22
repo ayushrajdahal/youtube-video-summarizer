@@ -70,6 +70,7 @@ def plotly_pie_chart(yt_id):
 
     comments = [item['snippet']['topLevelComment']['snippet']['textDisplay'] for item in response['items']]
     comments = list(map(lambda x: re.sub(r'<.*?>', '', x), comments))  # Remove content enclosed in <>
+    comments = [comment.replace("&#39;", "'").replace("&quot;", '"') for comment in comments]  # Replace &#39; with ' and &quot; with "
     polarities = [TextBlob(comment).sentiment.polarity for comment in comments]
     sentiments = ['Positive' if polarity > 0 else 'Negative' if polarity < 0 else 'Neutral' for polarity in polarities]
 
