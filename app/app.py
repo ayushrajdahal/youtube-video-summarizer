@@ -10,6 +10,7 @@ import plotly.express as px
 from htbuilder import HtmlElement, div, hr, a, p, img, styles
 from htbuilder.units import percent, px as ht_px
 from  pytube.extract import video_id
+import re
 
 youtube_api_key, huggingface_api_key = st.secrets['youtube_api_key'], st.secrets['huggingface_api_key']
 
@@ -57,6 +58,7 @@ def get_summary(yt_id):
 
     return output[0]['summary_text']
 
+
 def plotly_pie_chart(yt_id):
 
     request = youtube.commentThreads().list(
@@ -67,6 +69,7 @@ def plotly_pie_chart(yt_id):
     response = request.execute()
 
     comments = [item['snippet']['topLevelComment']['snippet']['textDisplay'] for item in response['items']]
+    comments = list(map(lambda x: re.sub(r'<.*?>', '', x), comments))  # Remove content enclosed in <>
     polarities = [TextBlob(comment).sentiment.polarity for comment in comments]
     sentiments = ['Positive' if polarity > 0 else 'Negative' if polarity < 0 else 'Neutral' for polarity in polarities]
 
