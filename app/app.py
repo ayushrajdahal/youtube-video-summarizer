@@ -1,34 +1,29 @@
-import os
+import os, re, json
 from fastapi import FastAPI
 from collections import Counter
 import requests
 from youtube_transcript_api import YouTubeTranscriptApi
 import pandas as pd
 from textblob import TextBlob
-from htbuilder import HtmlElement, div, hr, a, p, img, styles
-from htbuilder.units import percent, px as ht_px
 from pytube.extract import video_id
-import re
-
 import googleapiclient.discovery
 import googleapiclient.errors
-import plotly.express as px
+
 
 app = FastAPI()
 
-# youtube_api_key, huggingface_api_key = st.secrets['youtube_api_key'], st.secrets['huggingface_api_key']
-
-youtube_api_key = os.environ['YT_API_KEY']
-huggingface_api_key = os.environ['HF_API_KEY']
 
 # credentials for huggingface
 API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
+huggingface_api_key = os.environ['HF_API_KEY']
 headers = {"Authorization": f"Bearer {huggingface_api_key}"}
+
 
 # credentials for youtube v3
 api_service_name = "youtube"
 api_version = "v3"
-DEVELOPER_KEY = youtube_api_key
+DEVELOPER_KEY = os.environ['YT_API_KEY']
+
 
 youtube = googleapiclient.discovery.build(
     api_service_name, api_version, developerKey=DEVELOPER_KEY)
@@ -91,15 +86,10 @@ def plotly_pie_chart(yt_id):
     comments = [item['snippet']['topLevelComment']['snippet']['textDisplay'] for item in response['items']]
     comments = list(map(lambda x: re.sub(r'<.*?>', '', x), comments))  # Remove content enclosed in <>
     comments = [comment.replace("&#39;", "'").replace("&quot;", '"') for comment in comments]  # Replace &#39; with ' and &quot; with "
+    
     polarities = [TextBlob(comment).sentiment.polarity for comment in comments]
     sentiments = ['Positive' if polarity > 0 else 'Negative' if polarity < 0 else 'Neutral' for polarity in polarities]
 
-    df = pd.DataFrame(list(zip(comments, sentiments)), columns=['Comment', 'Sentiment'], index=range(1, len(comments) + 1))
-
-    sentiment_data = pd.Series(sentiments)
-
-    counter = Counter(sentiment_data)
-    labels = list(counter.keys())
-    values = list(counter.values())
-    fig = px.pie(values=values, names=labels, hole=.3, title='Comment Section Sentiment Analysis:')
-    return fig, df
+    table_json = json.dumps(list(zip(comments, sentiments)), columns=['Comment', 'Sentiment'], index=range(1, len(comments) + 1))
+    
+    return table_json
