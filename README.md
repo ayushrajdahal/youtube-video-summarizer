@@ -1,30 +1,23 @@
-# AnalyzeYT
+# YouTube Video Summarizer
 
 ## Author: Ayush Raj Dahal
 
-A python-based web app that summarizes YouTube videos using their subtitles and performs sentiment analysis on the comments. Aimed to prevent clickbait content and get overall public opinion about videos and creators.
+A TypeScript/Python-based web app that summarizes YouTube videos using their subtitles and performs sentiment analysis on the comments. Aimed to prevent clickbait content and get overall public opinion about videos and creators.
 
 ## Installation
 
 ```bash
-git clone https://github.com/ayushrajdahal/AnalyzeYT.git
-cd AnalyzeYT
+git clone https://github.com/ayushrajdahal/youtube-video-summarizer.git
+cd youtube-video-summarizer
 pip install -r requirements.txt
+cd frontend && npm install
 ```
 
 ## How to run
 
 ```bash
-python3 app/app.py
-```
-
-## File Structure
-
-```bash
-.
-├── app
-│   └── app.py          # main app
-└── requirements.txt    # dependencies
+python3 app/app.py          # for backend
+cd frontend && npm run dev  # for frontend
 ```
 
 ## Features
@@ -33,6 +26,7 @@ python3 app/app.py
 
 - Text Summarization using the <a href="https://huggingface.co/facebook/bart-large-cnn" target="_blank">BART CNN</a> model.
 - Sentiment analysis using <a href="https://textblob.readthedocs.io/en/dev/" target="_blank">TextBlob</a> (soon to be replaced by a custom model).
+- Frontend using TypeScript/React.
 - Backend using FastAPI.
 
 **Plans for the future:**
